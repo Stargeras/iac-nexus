@@ -28,7 +28,7 @@ resource "helm_release" "nexus" {
 
   set {
       name = "ingress.tls.hosts"
-      value = "${var.ingress.hostname}"
+      value = "${var.ingress_hostname}"
   }
 
   set {
