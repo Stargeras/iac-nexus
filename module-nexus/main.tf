@@ -31,10 +31,10 @@ resource "helm_release" "nexus" {
       value = "${var.ingress_hostname}"
   }
 
-  set {
-      name = "ingress.tls.secretName"
-      value = "${var.ingress_secret}"
-  }
+ # set {
+ #     name = "ingress.tls.secretName"
+ #     value = "${var.ingress_secret}"
+ # }
 
   set {
       name = "persistence.storageClass"
