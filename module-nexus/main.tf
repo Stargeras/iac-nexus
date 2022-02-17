@@ -27,6 +27,11 @@ resource "helm_release" "nexus" {
   }
 
   set {
+      name = "ingress.tls.hosts"
+      value = "${var.ingress.hostname}"
+  }
+
+  set {
     name = "persistence.storageClass"
     value = "${var.storage_class}"
   }
