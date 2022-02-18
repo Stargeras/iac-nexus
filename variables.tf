@@ -55,8 +55,9 @@ variable "docker_repositories" {
   }
 }
 variable "nexus_password" {
+    # Used to create the databases. After Helm install, the password will be admin123
     type = string
-    default = "admin123" #Used to create the databases. After Helm install, the password will be admin123
+    default = "admin123"
 }
 
 # Not yet implemented, default nginx certificate is used
