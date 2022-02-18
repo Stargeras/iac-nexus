@@ -42,8 +42,8 @@ resource "kubernetes_service" "repositories" {
     }
     spec {
       selector = {
-          app.kubernetes.io/instance = "nexus"
-          app.kubernetes.io/name = "nexus-repository-manager"
+          "app.kubernetes.io/instance" = "nexus"
+          "app.kubernetes.io/name" = "nexus-repository-manager"
       }
       port {
           port        = each.value["port"]
