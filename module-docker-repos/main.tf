@@ -11,13 +11,6 @@ provider "kubernetes" {
   ]
 }
 
-#resource "postgresql_role" "new_role" {
-#  for_each = toset(var.items)
-#  name     = "${each.value}"
-#  login    = true
-#  password = "${random_string.userpass[each.value].id}"
-#}
-
 resource "nexus_repository_docker_hosted" "repositories" {
     for_each = var.docker_repositories
     name = each.value["name"]
