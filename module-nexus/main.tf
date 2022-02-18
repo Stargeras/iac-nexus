@@ -61,8 +61,7 @@ resource "helm_release" "nexus" {
  #     value = "false"
  # }
 
-   set {
-       name = "nexus.env[2]"
-       value = {"NEXUS_SECURITY_RANDOMPASSWORD" = "false"}
-   }
+  values = [
+      "${file("env.yaml")}"
+  ]
 }
