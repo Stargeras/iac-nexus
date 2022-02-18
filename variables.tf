@@ -8,11 +8,11 @@ variable "service_type" {
 }
 variable "ingress_hostname" {
     type = string
-    default = "nexus.svc.cluster.local"
+    default = "nexus.local.domain"
 }
 variable "ingress_domain" {
     type = string
-    default = "svc.cluster.local"
+    default = "local.domain"
 }
 variable "storage_class" {
     type = string
@@ -39,17 +39,17 @@ variable "docker_repositories" {
   default = {
       repo1 = {
           name = "tenant1"
-          fqdn = "tenant1.svc.cluster.local"
+          fqdn = "tenant1.local.domain"
           port = 8090
       }
       repo2 = {
           name = "tenant2"
-          fqdn = "tenant2.svc.cluster.local"
+          fqdn = "tenant2.local.domain"
           port = 8091
       }
       repo3 = {
           name = "tenant3"
-          fqdn = "tenant3.svc.cluster.local"
+          fqdn = "tenant3.local.domain"
           port = 8092
       }
   }
