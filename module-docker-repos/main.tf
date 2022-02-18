@@ -37,7 +37,7 @@ resource "nexus_repository_docker_hosted" "repositories" {
 resource "kubernetes_service" "repositories" {
     for_each = var.docker_repositories
     metadata {
-      name = each.value["name"]
+      name = "${each.value["name"]}-docker-repo"
       namespace = "nexus"
     }
     spec {
@@ -51,4 +51,36 @@ resource "kubernetes_service" "repositories" {
       }
       type = "ClusterIP"
     }
+}
+
+resource "kubernetes_ingress_v1" "repositories" {
+  for_each = var.docker_repositories
+  metadata {
+    name = "${each.value["name"]}-docker-repo"
+    namespace = "nexus"
+  }
+  spec {
+    ingress_class_name = "nginx"
+    rule {
+      host = each.value["fqdn"]
+      http {
+        path {
+          backend {
+            service {
+              name = "${each.value["name"]}-docker-repo"
+              port {
+                number = each.value["port"]
+              }
+            }
+          }
+          path = "/"
+        }
+      }
+    }
+    tls {
+      hosts = [
+        each.value["fqdn"]
+      ]
+    }
+  }
 }
