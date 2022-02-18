@@ -5,6 +5,12 @@ provider "nexus" {
   username = "admin"
 }
 
+provider "kubernetes" {
+  config_paths = [
+    "${var.kubeconfig}"
+  ]
+}
+
 #resource "postgresql_role" "new_role" {
 #  for_each = toset(var.items)
 #  name     = "${each.value}"
@@ -25,5 +31,24 @@ resource "nexus_repository_docker_hosted" "repositories" {
         blob_store_name                = "default"
         strict_content_type_validation = true
         write_policy                   = "ALLOW"
+    }
+}
+
+resource "kubernetes_service" "repositories" {
+    for_each = var.docker_repositories
+    metadata {
+      name = each.value["name"]
+      namespace = "nexus"
+    }
+    spec {
+      selector = {
+          app.kubernetes.io/instance = "nexus"
+          app.kubernetes.io/name = "nexus-repository-manager"
+      }
+      port {
+          port        = each.value["port"]
+          target_port = each.value["port"]
+      }
+      type = "ClusterIP"
     }
 }
