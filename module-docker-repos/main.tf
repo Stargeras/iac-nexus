@@ -13,11 +13,11 @@ provider "nexus" {
 #}
 
 resource "nexus_repository_docker_hosted" "repositories" {
-    for_each = toset(var.docker_repositories)
-    name = "${each.key}"
+    for_each = var.docker_repositories
+    name = each.value["name"]
     online = true
     docker {
-        http_port = "${each.value}"
+        http_port = each.value["port"]
         force_basic_auth = false
         v1_enabled       = false
     }
