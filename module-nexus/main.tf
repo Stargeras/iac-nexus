@@ -11,6 +11,10 @@ resource "helm_release" "nexus" {
   repository = "https://sonatype.github.io/helm3-charts/"
   chart      = "nexus-repository-manager"
 
+  values = [
+      "${file("env.yaml")}"
+  ]
+ 
   set {
       name  = "service.type"
       value = "${var.service_type}"
@@ -50,18 +54,4 @@ resource "helm_release" "nexus" {
       name = "nexus.docker.enabled"
       value = "true"
   }
-
- # set {
- #     name = "nexus.env[0].name"
- #     value = "NEXUS_SECURITY_RANDOMPASSWORD"
- # }
-
- # set {
- #     name = "nexus.env[0].value"
- #     value = "false"
- # }
-
-  values = [
-      "${file("env.yaml")}"
-  ]
 }
