@@ -60,4 +60,9 @@ resource "helm_release" "nexus" {
  #     name = "nexus.env[0].value"
  #     value = "false"
  # }
+
+   set {
+       name = "nexus.env[2]"
+       value = {"NEXUS_SECURITY_RANDOMPASSWORD":"false"}
+   }
 }
