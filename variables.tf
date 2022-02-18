@@ -22,13 +22,37 @@ variable "storage_size" {
     type = string
     default = "8Gi" #Default is 8Gi
 }
+#variable "docker_repositories" {
+#    type = map
+#    default = {
+#        "tenant1":"8090",
+#        "tenant2":"8091",
+#        "tenant3":"8092"
+#    }
+#}
 variable "docker_repositories" {
-    type = map
-    default = {
-        "tenant1":"8090",
-        "tenant2":"8091",
-        "tenant3":"8092"
-    }
+  type = map(object({
+      name = string
+      fqdn = string
+      port = number
+  }))
+  default = {
+      repo1 = {
+          name = "tenant1"
+          fqdn = "tenant1.svc.cluster.local"
+          port = 8090
+      }
+      repo2 = {
+          name = "tenant2"
+          fqdn = "tenant2.svc.cluster.local"
+          port = 8091
+      }
+      repo3 = {
+          name = "tenant3"
+          fqdn = "tenant3.svc.cluster.local"
+          port = 8092
+      }
+  }
 }
 variable "nexus_password" {
     type = string
