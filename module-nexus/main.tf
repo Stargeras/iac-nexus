@@ -12,7 +12,7 @@ resource "helm_release" "nexus" {
   chart      = "nexus-repository-manager"
 
   values = [
-      "${file("env.yaml")}"
+      "${file("${path.module}/env.yaml")}"
   ]
  
   set {
