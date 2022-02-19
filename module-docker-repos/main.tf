@@ -92,6 +92,7 @@ resource "kubernetes_ingress_v1" "repositories" {
 
 resource "random_password" "sa_password" {
   for_each = var.tenants
+  special = false
   length = 16
 }
 
@@ -103,6 +104,7 @@ resource "nexus_security_role" "tenants" {
     "nx-repository-view-docker-${each.value["docker_repo_name"]}-*",
   ]
   roleid = each.value["tenant_sa_name"]
+  depends_on = [nexus_repository_docker_hosted.repositories]
 }
 
 resource "nexus_security_user" "tenants" {
@@ -111,7 +113,8 @@ resource "nexus_security_user" "tenants" {
   firstname = "${each.value["tenant_sa_name"]}"
   lastname  = "${each.value["tenant_sa_name"]}"
   email     = "${each.value["tenant_sa_name"]}@example.com"
-  password  = random_password.sa_password[each.value].result
+  password  = "${random_password.sa_password["each.key"].result}"
   roles     = ["${each.value["tenant_sa_name"]}"]
   status    = "active"
+  depends_on = [nexus_security_role.tenants]
 }
