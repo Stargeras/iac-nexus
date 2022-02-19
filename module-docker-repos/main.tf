@@ -77,3 +77,15 @@ resource "kubernetes_ingress_v1" "repositories" {
     }
   }
 }
+
+resource "nexus_security_realms" "example" {
+  active = [
+    "NexusAuthenticatingRealm",
+    "NexusAuthorizingRealm",
+    "DockerToken",
+  ]
+}
+
+data "nexus_security_realms" "default" {
+    #Use terraform show to view data source  
+}
