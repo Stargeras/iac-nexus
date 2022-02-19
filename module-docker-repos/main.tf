@@ -106,6 +106,7 @@ resource "nexus_security_role" "tenants" {
 }
 
 resource "nexus_security_user" "tenants" {
+  for_each = var.tenants
   userid    = "${each.value["tenant_sa_name"]}"
   firstname = "${each.value["tenant_sa_name"]}"
   lastname  = "${each.value["tenant_sa_name"]}"
