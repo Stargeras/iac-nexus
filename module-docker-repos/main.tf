@@ -113,7 +113,7 @@ resource "nexus_security_user" "tenants" {
   firstname = "${each.value["tenant_sa_name"]}"
   lastname  = "${each.value["tenant_sa_name"]}"
   email     = "${each.value["tenant_sa_name"]}@example.com"
-  password  = "${random_password.sa_password["each.key"].result}"
+  password  = "${random_password.sa_password[each.key].result}"
   roles     = ["${each.value["tenant_sa_name"]}"]
   status    = "active"
   depends_on = [nexus_security_role.tenants]
