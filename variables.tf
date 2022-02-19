@@ -10,10 +10,6 @@ variable "ingress_hostname" {
     type = string
     default = "nexus.local.domain"
 }
-variable "ingress_domain" {
-    type = string
-    default = "local.domain"
-}
 variable "storage_class" {
     type = string
     default = "local-path"
@@ -39,17 +35,17 @@ variable "docker_repositories" {
   default = {
       repo1 = {
           name = "tenant1"
-          fqdn = "tenant1.local.domain"
+          fqdn = "tenant1-docker.local.domain"
           port = 8090
       }
       repo2 = {
           name = "tenant2"
-          fqdn = "tenant2.local.domain"
+          fqdn = "tenant2-docker.local.domain"
           port = 8091
       }
       repo3 = {
           name = "tenant3"
-          fqdn = "tenant3.local.domain"
+          fqdn = "tenant3-docker.local.domain"
           port = 8092
       }
   }
