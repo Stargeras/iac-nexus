@@ -11,6 +11,6 @@ module "docker-repos" {
     source = "./module-docker-repos"
     kubeconfig = "${var.kubeconfig}"
     ingress_hostname = "${var.ingress_hostname}"
-    docker_repositories = "${var.docker_repositories}"
+    tenants = "${var.tenants}"
     nexus_password = "${var.nexus_password}"
 }

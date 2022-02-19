@@ -26,27 +26,31 @@ variable "storage_size" {
 #        "tenant3":"8092"
 #    }
 #}
-variable "docker_repositories" {
+variable "tenants" {
   type = map(object({
-      name = string
-      fqdn = string
-      port = number
+      docker_repo_name = string
+      docker_repo_fqdn = string
+      docker_repo_port = number
+      tenant_sa_name   = string
   }))
   default = {
-      repo1 = {
-          name = "tenant1"
-          fqdn = "tenant1-docker.local.domain"
-          port = 8090
+      tenant1 = {
+          docker_repo_name = "tenant1-docker"
+          docker_repo_fqdn = "tenant1-docker.local.domain"
+          docker_repo_port = 8090
+          tenant_sa_name = "tenant1-sa"
       }
-      repo2 = {
-          name = "tenant2"
-          fqdn = "tenant2-docker.local.domain"
-          port = 8091
+      tenant2 = {
+          docker_repo_name = "tenant2-docker"
+          docker_repo_fqdn = "tenant2-docker.local.domain"
+          docker_repo_port = 8091
+          tenant_sa_name = "tenant2-sa"
       }
-      repo3 = {
-          name = "tenant3"
-          fqdn = "tenant3-docker.local.domain"
-          port = 8092
+      tenant3 = {
+          docker_repo_name = "tenant3-docker"
+          docker_repo_fqdn = "tenant3-docker.local.domain"
+          docker_repo_port = 8092
+          tenant_sa_name = "tenant3-sa"
       }
   }
 }
