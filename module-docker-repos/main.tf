@@ -93,7 +93,7 @@ resource "kubernetes_ingress_v1" "repositories" {
 resource "random_password" "sa_password" {
   for_each = var.tenants
   special = false
-  length = 16
+  length = 32
 }
 
 resource "nexus_security_role" "tenants" {
