@@ -1,4 +1,4 @@
 variable "kubeconfig" {}
 variable "ingress_hostname" {}
-variable "docker_repositories" {}
+variable "tenants" {}
 variable "nexus_password" {}

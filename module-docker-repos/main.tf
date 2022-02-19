@@ -11,12 +11,24 @@ provider "kubernetes" {
   ]
 }
 
+resource "nexus_security_realms" "example" {
+  active = [
+    "NexusAuthenticatingRealm",
+    "NexusAuthorizingRealm",
+    "DockerToken",
+  ]
+}
+
+data "nexus_security_realms" "default" {
+    #Use terraform show to view data source  
+}
+
 resource "nexus_repository_docker_hosted" "repositories" {
-    for_each = var.docker_repositories
-    name = each.value["name"]
+    for_each = var.tenants
+    name = each.value["docker_repo_name"]
     online = true
     docker {
-        http_port = each.value["port"]
+        http_port = each.value["docker_repo_port"]
         force_basic_auth = false
         v1_enabled       = false
     }
@@ -28,9 +40,9 @@ resource "nexus_repository_docker_hosted" "repositories" {
 }
 
 resource "kubernetes_service" "repositories" {
-    for_each = var.docker_repositories
+    for_each = var.tenants
     metadata {
-      name = "${each.value["name"]}-docker-repo"
+      name = "${each.value["docker_repo_name"]}-docker-repo"
       namespace = "nexus"
     }
     spec {
@@ -39,30 +51,30 @@ resource "kubernetes_service" "repositories" {
           "app.kubernetes.io/name" = "nexus-repository-manager"
       }
       port {
-          port        = each.value["port"]
-          target_port = each.value["port"]
+          port        = each.value["docker_repo_port"]
+          target_port = each.value["docker_repo_port"]
       }
       type = "ClusterIP"
     }
 }
 
 resource "kubernetes_ingress_v1" "repositories" {
-  for_each = var.docker_repositories
+  for_each = var.tenants
   metadata {
-    name = "${each.value["name"]}-docker-repo"
+    name = "${each.value["docker_repo_name"]}-docker-repo"
     namespace = "nexus"
   }
   spec {
     ingress_class_name = "nginx"
     rule {
-      host = each.value["fqdn"]
+      host = each.value["docker_repo_fqdn"]
       http {
         path {
           backend {
             service {
-              name = "${each.value["name"]}-docker-repo"
+              name = "${each.value["docker_repo_name"]}-docker-repo"
               port {
-                number = each.value["port"]
+                number = each.value["docker_repo_port"]
               }
             }
           }
@@ -72,20 +84,37 @@ resource "kubernetes_ingress_v1" "repositories" {
     }
     tls {
       hosts = [
-        each.value["fqdn"]
+        each.value["docker_repo_fqdn"]
       ]
     }
   }
 }
 
-resource "nexus_security_realms" "example" {
-  active = [
-    "NexusAuthenticatingRealm",
-    "NexusAuthorizingRealm",
-    "DockerToken",
-  ]
+resource "random_password" "sa_password" {
+  for_each = var.tenants
+  special = false
+  length = 16
 }
 
-data "nexus_security_realms" "default" {
-    #Use terraform show to view data source  
+resource "nexus_security_role" "tenants" {
+  for_each = var.tenants
+  name        = "${each.value["tenant_sa_name"]}"
+  privileges = [
+    "nx-repository-admin-docker-${each.value["docker_repo_name"]}-*",
+    "nx-repository-view-docker-${each.value["docker_repo_name"]}-*",
+  ]
+  roleid = each.value["tenant_sa_name"]
+  depends_on = [nexus_repository_docker_hosted.repositories]
+}
+
+resource "nexus_security_user" "tenants" {
+  for_each = var.tenants
+  userid    = "${each.value["tenant_sa_name"]}"
+  firstname = "${each.value["tenant_sa_name"]}"
+  lastname  = "${each.value["tenant_sa_name"]}"
+  email     = "${each.value["tenant_sa_name"]}@example.com"
+  password  = "${random_password.sa_password[each.key].result}"
+  roles     = ["${each.value["tenant_sa_name"]}"]
+  status    = "active"
+  depends_on = [nexus_security_role.tenants]
 }
