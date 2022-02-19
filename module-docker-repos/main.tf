@@ -19,9 +19,9 @@ resource "nexus_security_realms" "example" {
   ]
 }
 
-data "nexus_security_realms" "default" {
+#data "nexus_security_realms" "default" {
     #Use terraform show to view data source  
-}
+#}
 
 resource "nexus_repository_docker_hosted" "repositories" {
     for_each = var.tenants
