@@ -14,7 +14,7 @@ resource "nexus_repository_docker_hosted" "repositories" {
     }
 }
 
-resource "nexus_repository" "maven-releases" {
+resource "nexus_repository" "maven_releases" {
     for_each = var.tenants
     name = "${each.key}-private-maven-2-releases"
     format = "maven2"
@@ -31,7 +31,7 @@ resource "nexus_repository" "maven-releases" {
     }
 }
 
-resource "nexus_repository" "maven-snapshots" {
+resource "nexus_repository" "maven_snapshots" {
     for_each = var.tenants
     name = "${each.key}-private-maven-2-snapshots"
     format = "maven2"
@@ -44,6 +44,6 @@ resource "nexus_repository" "maven-snapshots" {
     }
 
     maven {
-        version_policy = "RELEASE"
+        version_policy = "SNAPSHOT"
     }
 }
