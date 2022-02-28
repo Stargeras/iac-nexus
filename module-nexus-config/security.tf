@@ -6,6 +6,10 @@ resource "nexus_security_realms" "example" {
   ]
 }
 
+resource "nexus_security_anonymous" "system" {
+  enabled = "${var.nexus_allow_anonymous}"
+}
+
 #data "nexus_security_realms" "default" {
     #Use terraform show to view data source  
 #}
