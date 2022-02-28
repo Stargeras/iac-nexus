@@ -21,10 +21,18 @@ resource "nexus_security_role" "tenants" {
   name        = "${each.value["tenant_sa_name"]}"
   privileges = [
     "nx-repository-admin-docker-${each.value["docker_repo_name"]}-*",
+    "nx-repository-admin-maven2-${each.key}-private-maven-2-releases-*",
+    "nx-repository-admin-maven2-${each.key}-private-maven-2-snapshots-*",
     "nx-repository-view-docker-${each.value["docker_repo_name"]}-*",
+    "nx-repository-view-maven2-${each.key}-private-maven-2-releases-*",
+    "nx-repository-view-maven2-${each.key}-private-maven-2-snapshots-*",
   ]
   roleid = each.value["tenant_sa_name"]
-  depends_on = [nexus_repository_docker_hosted.repositories]
+  depends_on = [
+    nexus_repository_docker_hosted.repositories,
+    nexus_repository_maven_releases,
+    nexus_repository_maven_snapshots,
+  ]
 }
 
 resource "nexus_security_user" "tenants" {

@@ -16,7 +16,7 @@ resource "nexus_repository_docker_hosted" "repositories" {
 
 resource "nexus_repository" "maven-releases" {
     for_each = var.tenants
-    name = "${each.key}-private-maven-2-relases"
+    name = "${each.key}-private-maven-2-releases"
     format = "maven2"
     type = "hosted"
 
