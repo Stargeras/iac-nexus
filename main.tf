@@ -1,5 +1,5 @@
-module "nexus" {
-    source = "./module-nexus"
+module "nexus-install" {
+    source = "./module-nexus-install"
     kubeconfig = "${var.kubeconfig}"
     service_type = "${var.service_type}"
     ingress_hostname = "${var.ingress_hostname}"
@@ -7,8 +7,8 @@ module "nexus" {
     storage_size = "${var.storage_size}"
 }
 
-module "docker-repos" {
-    source = "./module-docker-repos"
+module "nexus-config" {
+    source = "./module-nexus-config"
     kubeconfig = "${var.kubeconfig}"
     ingress_hostname = "${var.ingress_hostname}"
     tenants = "${var.tenants}"
