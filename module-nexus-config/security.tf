@@ -30,8 +30,8 @@ resource "nexus_security_role" "tenants" {
   roleid = each.value["tenant_sa_name"]
   depends_on = [
     nexus_repository_docker_hosted.repositories,
-    nexus_repository_maven_releases,
-    nexus_repository_maven_snapshots,
+    nexus_repository.maven_releases,
+    nexus_repository.maven_snapshots,
   ]
 }
 
