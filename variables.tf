@@ -60,9 +60,14 @@ variable "nexus_password" {
     default = "admin123"
 }
 
-variable "nexus_allow_anonymous" {
+variable "nexus_anonymous_enable" {
     type = bool
     default = false
+}
+
+variable "nexus_anonymous_user" {
+    type = string
+    default = "anonymous"
 }
 
 # Not yet implemented, default nginx certificate is used

@@ -13,5 +13,6 @@ module "nexus-config" {
     ingress_hostname = "${var.ingress_hostname}"
     tenants = "${var.tenants}"
     nexus_password = "${var.nexus_password}"
-    nexus_allow_anonymous = "${var.nexus_allow_anonymous}"
+    nexus_anonymous_enable = "${var.nexus_anonymous_enable}"
+    nexus_anonymous_user = "${var.nexus_anonymous_user}"
 }

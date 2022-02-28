@@ -7,7 +7,8 @@ resource "nexus_security_realms" "example" {
 }
 
 resource "nexus_security_anonymous" "system" {
-  enabled = "${var.nexus_allow_anonymous}"
+  enabled = "${var.nexus_anonymous_enable}"
+  user_id = "${var.nexus_anonymous_user}"
 }
 
 #data "nexus_security_realms" "default" {
