@@ -60,6 +60,11 @@ variable "nexus_password" {
     default = "admin123"
 }
 
+variable "nexus_allow_anonymous" {
+    type = bool
+    default = false
+}
+
 # Not yet implemented, default nginx certificate is used
 #variable "ingress_secret" {
 #    type = string
