@@ -1,6 +1,6 @@
 provider "nexus" {
   insecure = true
-  password = "${var.nexus_password}"
+  password = var.nexus_password
   url      = "https://${var.ingress_hostname}"
   username = "admin"
 }

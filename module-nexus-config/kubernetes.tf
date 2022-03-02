@@ -1,26 +1,26 @@
 resource "kubernetes_service" "repositories" {
-    for_each = var.tenants
-    metadata {
-      name = "${each.value["docker_repo_name"]}-docker-repo"
-      namespace = "nexus"
+  for_each = var.tenants
+  metadata {
+    name      = "${each.value["docker_repo_name"]}-docker-repo"
+    namespace = "nexus"
+  }
+  spec {
+    selector = {
+      "app.kubernetes.io/instance" = "nexus"
+      "app.kubernetes.io/name"     = "nexus-repository-manager"
     }
-    spec {
-      selector = {
-          "app.kubernetes.io/instance" = "nexus"
-          "app.kubernetes.io/name" = "nexus-repository-manager"
-      }
-      port {
-          port        = each.value["docker_repo_port"]
-          target_port = each.value["docker_repo_port"]
-      }
-      type = "ClusterIP"
+    port {
+      port        = each.value["docker_repo_port"]
+      target_port = each.value["docker_repo_port"]
     }
+    type = "ClusterIP"
+  }
 }
 
 resource "kubernetes_ingress_v1" "repositories" {
   for_each = var.tenants
   metadata {
-    name = "${each.value["docker_repo_name"]}-docker-repo"
+    name      = "${each.value["docker_repo_name"]}-docker-repo"
     namespace = "nexus"
   }
   spec {
