@@ -8,7 +8,6 @@ module "nexus-install" {
 }
 
 module "nexus-config" {
-  depends_on             = [module.nexus-install]
   source                 = "./module-nexus-config"
   kubeconfig             = var.kubeconfig
   ingress_hostname       = var.ingress_hostname
