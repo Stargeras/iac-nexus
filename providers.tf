@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    nexus = {
+      source = "datadrivers/nexus"
+    }
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig
+  }
+}
+
 provider "nexus" {
   insecure = true
   password = var.nexus_password

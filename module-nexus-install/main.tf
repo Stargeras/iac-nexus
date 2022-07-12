@@ -1,9 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig
-  }
-}
-
 resource "helm_release" "nexus" {
   name             = "nexus"
   namespace        = "nexus"
@@ -12,46 +6,11 @@ resource "helm_release" "nexus" {
   chart            = "nexus-repository-manager"
 
   values = [
-    "${file("${path.module}/env.yaml")}"
+    templatefile("${path.module}/values-tmpl.yaml", {
+      service_type     = var.service_type
+      ingress_hostname = var.ingress_hostname
+      storage_class    = var.storage_class
+      storage_size     = var.storage_size
+    })
   ]
-
-  set {
-    name  = "service.type"
-    value = var.service_type
-  }
-
-  set {
-    name  = "ingress.enabled"
-    value = "true"
-  }
-
-  set {
-    name  = "ingress.hostRepo"
-    value = var.ingress_hostname
-  }
-
-  set {
-    name  = "ingress.tls[0].hosts[0]"
-    value = var.ingress_hostname
-  }
-
-  # set {
-  #     name = "ingress.tls.secretName"
-  #     value = "${var.ingress_secret}"
-  # }
-
-  set {
-    name  = "persistence.storageClass"
-    value = var.storage_class
-  }
-
-  set {
-    name  = "persistence.storageSize"
-    value = var.storage_size
-  }
-
-  set {
-    name  = "nexus.docker.enabled"
-    value = "true"
-  }
 }
